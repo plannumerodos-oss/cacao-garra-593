@@ -48,13 +48,17 @@ if (SpeechRecognition) {
     procesarMensajeIA(transcript);
   };
 
+  recognition.onerror = () => {
+    hablar('No te escuché bien o falta permiso de micrófono. También puedes usar el micrófono de tu teclado abajo.');
+  };
+
   recognition.onend = () => {
     btnMic.classList.remove('listening');
     btnMic.textContent = '🎤 HABLAR CON CHOCOPAW';
   };
 } else {
   btnMic.addEventListener('click', () => {
-    hablar('Tu celular no soporta micrófono directo aquí, pero puedes escribir o dictar con el teclado abajo.');
+    hablar('Toca el cuadro de texto de abajo y usa el micrófono de tu teclado para dictarme.');
   });
 }
 
@@ -67,7 +71,7 @@ document.getElementById('btn-send').addEventListener('click', () => {
   }
 });
 
-// Cerebro de ChocoPaw con Gemini AI
+// Cerebro de ChocoPaw con Gemini AI (Corregido)
 async function procesarMensajeIA(textoUsuario) {
   if (!apiKey) {
     hablar('Falta poner la clave gratuita de IA en el botón de engranaje ⚙️ arriba a la derecha.');
@@ -79,10 +83,10 @@ async function procesarMensajeIA(textoUsuario) {
   const prompt = `
 Eres ChocoPaw, un asistente virtual amable para la pastelería ecuatoriana "Cacao & Garra 593".
 Analiza este mensaje de la dueña: "${textoUsuario}"
-Responde ÚNICAMENTE con un objeto JSON válido (sin markdown ni texto extra) con esta estructura:
+Responde ÚNICAMENTE con un objeto JSON válido con esta estructura exacta:
 {
   "tipo": "pedido" | "gasto" | "compra" | "consulta",
-  "resumen_voz": "Frase corta y amable explicando lo que entendiste para pedir confirmación",
+  "resumen_voz": "Frase corta y amable explicando lo que entendiste para pedir confirmación (o respondiendo si es consulta)",
   "datos": {
     "cliente": "nombre o 'Cliente'",
     "producto": "descripción del pastel/postre",
@@ -96,15 +100,25 @@ Responde ÚNICAMENTE con un objeto JSON válido (sin markdown ni texto extra) co
 }`;
 
   try {
-    const res = await fetch(`https://googleapis.com{apiKey}`, {
+    const res = await fetch(`https://googleapis.com{encodeURIComponent(apiKey)}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }]
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: {
+          responseMimeType: "application/json"
+        }
       })
     });
 
     const data = await res.json();
+
+    if (!res.ok) {
+      const msgError = data.error?.message || 'Clave inválida o sin cuota';
+      hablar(`Error de Google AI: ${msgError}`);
+      return;
+    }
+
     let rawText = data.candidates[0].content.parts[0].text;
     rawText = rawText.replace(/```json|```/g, '').trim();
     const resultado = JSON.parse(rawText);
@@ -118,7 +132,7 @@ Responde ÚNICAMENTE con un objeto JSON válido (sin markdown ni texto extra) co
     mostrarConfirmacion(resultado);
     hablar(resultado.resumen_voz + '. ¿Está todo correcto?');
   } catch (err) {
-    hablar('No pude conectarme bien. Revisa tu internet o tu clave de IA.');
+    hablar(`No pude conectar (${err.message}). Revisa el internet del celular o vuelve a pegar la clave en ⚙️.`);
   }
 }
 
@@ -248,21 +262,18 @@ window.marcarEntregado = (idx) => {
   pedidos[idx].entregado = !pedidos[idx].entregado;
   if (pedidos[idx].entregado) pedidos[idx].abono = pedidos[idx].total;
   localStorage.setItem('cg593_pedidos', JSON.stringify(pedidos));
-  actualizarPantalla();
+actualizarPantalla();
 };
-
 window.borrarCompra = (idx) => {
-  compras.splice(idx, 1);
-  localStorage.setItem('cg593_compras', JSON.stringify(compras));
-  actualizarPantalla();
+compras.splice(idx, 1);
+localStorage.setItem('cg593_compras', JSON.stringify(compras));
+actualizarPantalla();
 };
-
 // Configuración API Key
 document.getElementById('btn-config').addEventListener('click', () => {
-  document.getElementById('api-key-input').value = apiKey;
-  document.getElementById('modal-config').classList.remove('hidden');
+document.getElementById('api-key-input').value = apiKey;
+document.getElementById('modal-config').classList.remove('hidden');
 });
-
 document.getElementById('btn-close-config').addEventListener('click', () => {
 document.getElementById('modal-config').classList.add('hidden');
 });
