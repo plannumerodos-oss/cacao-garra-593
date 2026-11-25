@@ -29,6 +29,18 @@ jobs:
           npx cap add android
           npx cap sync android
 
+      - name: Poner logo de ChocoPaw como icono oficial
+        run: |
+          if [ -f "www/logo.png" ]; then
+            sudo apt-get update && sudo apt-get install -y imagemagick
+            for dir in mipmap-mdpi mipmap-hdpi mipmap-xhdpi mipmap-xxhdpi mipmap-xxxhdpi; do
+              mkdir -p android/app/src/main/res/$dir
+              convert www/logo.png -resize 192x192 android/app/src/main/res/$dir/ic_launcher.png
+              convert www/logo.png -resize 192x192 android/app/src/main/res/$dir/ic_launcher_round.png
+              convert www/logo.png -resize 192x192 android/app/src/main/res/$dir/ic_launcher_foreground.png
+            done
+          fi
+
       - name: Compilar APK Debug
         run: |
           cd android
