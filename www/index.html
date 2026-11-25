@@ -8,9 +8,20 @@
 </head>
 <body>
 
+  <!-- PANTALLA DE ENTRADA ANIMADA (SPLASH SCREEN) -->
+  <div id="splash-screen" class="splash">
+    <div class="splash-content">
+      <img src="logo.png" alt="ChocoPaw" class="splash-logo" onerror="this.style.display='none'" />
+      <h1 class="splash-title">Cacao & Garra 593</h1>
+      <p class="splash-slogan">Dulzura ecuatoriana en cada patita</p>
+      <div class="loader-bar"><div class="loader-fill"></div></div>
+    </div>
+  </div>
+
+  <!-- Encabezado con el avatar real de ChocoPaw -->
   <header class="header">
     <div class="mascot-box">
-      <div class="avatar">🦊🐺🐱</div>
+      <img src="logo.png" alt="ChocoPaw" class="avatar-img" onerror="this.src='data:image/svg+xml,<svg xmlns=%22http://w3.org viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2280%22>🦊</text></svg>'" />
       <div>
         <h1>Cacao & Garra 593</h1>
         <p class="slogan">Dulzura ecuatoriana en cada patita</p>
@@ -19,8 +30,12 @@
     <button id="btn-config" class="btn-icon" title="Configurar IA">⚙️</button>
   </header>
 
+  <!-- Burbuja de voz de ChocoPaw -->
   <section class="chocopaw-chat">
-    <p id="chocopaw-msg">¡Hola! Soy <strong>ChocoPaw</strong> 🐾. Toca el botón rojo y dime qué pedido o gasto anotamos hoy.</p>
+    <div class="assistant-header">
+      <img src="logo.png" alt="ChocoPaw" class="mini-avatar" onerror="this.style.display='none'" />
+      <p id="chocopaw-msg">¡Hola! Soy <strong>ChocoPaw</strong> 🐾. Toca el botón rojo y dime qué pedido o gasto anotamos hoy.</p>
+    </div>
     
     <button id="btn-mic" class="btn-mic">
       🎤 HABLAR CON CHOCOPAW
@@ -41,12 +56,14 @@
     </div>
   </section>
 
+  <!-- Navegación principal -->
   <nav class="tabs">
     <button class="tab active" data-tab="pedidos">🎂 Pedidos</button>
     <button class="tab" data-tab="cuentas">💵 Cuentas</button>
     <button class="tab" data-tab="compras">🛒 Compras</button>
   </nav>
 
+  <!-- SECCIÓN 1: PEDIDOS -->
   <main id="tab-pedidos" class="tab-content active">
     <div class="section-header">
       <h2>Agenda de Entregas</h2>
@@ -54,6 +71,7 @@
     <div id="lista-pedidos" class="cards-list"></div>
   </main>
 
+  <!-- SECCIÓN 2: CUENTAS -->
   <main id="tab-cuentas" class="tab-content">
     <h2>Resumen del Negocio ($)</h2>
     <div class="summary-grid">
@@ -84,6 +102,7 @@
     </div>
   </main>
 
+  <!-- SECCIÓN 3: LISTA DEL SUPERMERCADO -->
   <main id="tab-compras" class="tab-content">
     <h2>🛒 Qué falta comprar</h2>
     <div class="text-input-row">
@@ -93,6 +112,7 @@
     <ul id="lista-compras" class="shopping-list"></ul>
   </main>
 
+  <!-- Modal de configuración de API Key -->
   <div id="modal-config" class="modal hidden">
     <div class="modal-content">
       <h2>⚙️ Cerebro IA de ChocoPaw</h2>
