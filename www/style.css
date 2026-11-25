@@ -20,10 +20,82 @@ body {
   padding-bottom: 40px;
 }
 
+/* PANTALLA ANIMADA DE ENTRADA */
+.splash {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at center, #3b1f16 0%, #141418 100%);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  color: white;
+  animation: fadeOutSplash 0.6s ease-out 2.4s forwards;
+}
+
+.splash-content {
+  padding: 24px;
+  animation: popIn 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.splash-logo {
+  width: 170px;
+  height: 170px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 4px solid var(--rojo);
+  box-shadow: 0 0 30px rgba(200, 29, 37, 0.7);
+  margin-bottom: 16px;
+}
+
+.splash-title {
+  font-size: 28px;
+  margin: 0;
+  color: #fff;
+}
+
+.splash-slogan {
+  color: #ffd166;
+  font-size: 16px;
+  margin: 8px 0 20px;
+}
+
+.loader-bar {
+  width: 200px;
+  height: 8px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  margin: 0 auto;
+  overflow: hidden;
+}
+
+.loader-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--rojo);
+  animation: loadBar 2.2s ease-in-out forwards;
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: scale(0.7) translateY(20px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+@keyframes loadBar {
+  0% { width: 0%; }
+  100% { width: 100%; }
+}
+
+@keyframes fadeOutSplash {
+  to { opacity: 0; visibility: hidden; pointer-events: none; }
+}
+
+/* ENCABEZADO E IMÁGENES INTERIORES */
 .header {
   background: linear-gradient(135deg, var(--negro), var(--cacao));
   color: white;
-  padding: 16px;
+  padding: 14px 16px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -36,12 +108,29 @@ body {
   gap: 12px;
 }
 
-.avatar {
-  font-size: 28px;
-  background: var(--rojo);
-  padding: 8px;
+.avatar-img {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
   border-radius: 50%;
-  border: 2px solid white;
+  border: 3px solid var(--rojo);
+  background: #1e1e24;
+}
+
+.assistant-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.mini-avatar {
+  width: 52px;
+  height: 52px;
+  object-fit: cover;
+  border-radius: 14px;
+  border: 2px solid var(--cacao);
+  flex-shrink: 0;
 }
 
 .header h1 {
@@ -74,9 +163,9 @@ body {
 }
 
 #chocopaw-msg {
-  font-size: 17px;
+  font-size: 16px;
   line-height: 1.4;
-  margin-top: 0;
+  margin: 0;
 }
 
 .btn-mic {
@@ -302,6 +391,7 @@ input {
   align-items: center;
   justify-content: center;
   padding: 20px;
+  z-index: 9999;
 }
 
 .modal-content {
