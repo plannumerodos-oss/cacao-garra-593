@@ -401,3 +401,13 @@ input {
   width: 100%;
   max-width: 400px;
 }
+
+.text-input-row input {
+  min-width: 0;
+  width: 100%;
+}
+
+.btn-send {
+  flex-shrink: 0;
+  padding: 14px 14px;
+}
