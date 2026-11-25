@@ -1,0 +1,17 @@
+{
+  "name": "cacao-garra-593",
+  "version": "1.0.0",
+  "description": "Asistente virtual ChocoPaw para pasteleria - Cacao & Garra 593",
+  "main": "www/index.html",
+  "scripts": {
+    "build": "echo 'Listo'"
+  },
+  "dependencies": {
+    "@capacitor/android": "^6.0.0",
+    "@capacitor/core": "^6.0.0",
+    "@capacitor/local-notifications": "^6.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "^6.0.0"
+  }
+}
